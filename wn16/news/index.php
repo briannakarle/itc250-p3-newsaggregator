@@ -36,7 +36,7 @@ $config->nav1 = array("page.php"=>"New Page!") + $config->nav1; #add a new page 
 */
 
 # SQL statement - PREFIX is optional way to distinguish your app
-$sql = "select * from wn16_news_category";
+$sql = "select * from wn16_news_categories";
 
 //END CONFIG AREA ---------------------------------------------------------- 
 
@@ -85,7 +85,7 @@ if(mysqli_num_rows($result) > 0)
 	{# pull data from associative array
 	   echo '<p>';
 	   echo '<a href="read_feed.php?id=' . $row['CategoryID'] . '">' . $row['Category'] . '</a><br />';
-	   echo 'Description: <b>' . $row['Description'] . '</b><br />';
+	   echo 'Description: <b>' . $row['Description'] . '</b><br />';   
 	   echo '</p>';
 	}
 }else{#no records

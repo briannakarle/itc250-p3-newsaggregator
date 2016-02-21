@@ -67,7 +67,7 @@ class Feed
         $this->CategoryID = (int)$id;
         
         #SQL statement - PREFIX is optional way to distinguish your app
-        $sql = "select * from wn16_news_category where CategoryID=$this->CategoryID";
+        $sql = "select * from wn16_news_categories where CategoryID=$this->CategoryID";
         
 
         #IDB::conn() creates a shareable database connection via a singleton class
@@ -79,8 +79,10 @@ class Feed
             while($row = mysqli_fetch_assoc($result))
             {# pull data from associative array
                 
-                $this->Category = $row['Category'];
-                $this->Description = $row['Description'];
+                $querySplit = explode(" ", $row['Category']);
+                $query = implode("+", $querySplit);
+                $this->Category = $query;
+                
                 
                   $request = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&q=' . $this->Category . '&output=rss';
                   $response = file_get_contents($request);
