@@ -27,7 +27,7 @@ get_header(); #defaults to theme header or header_inc.php
 
 
 </div>
-<p </p>
+<p></p> </p>
 <?php
 # connection comes first in mysqli (improved) function
 $result = mysqli_query(IDB::conn(),$sql) or die(trigger_error(mysqli_error(IDB::conn()), E_USER_ERROR));
