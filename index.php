@@ -1,6 +1,6 @@
 <?php
 /**
- * index.php is a model for largely static PHP pages 
+ * index.php 
  *
  * @package nmCommon
  * @author Bill Newman <williamnewman@gmail.com>
@@ -32,19 +32,11 @@ get_header(); #defaults to theme header or header_inc.php
 <div class="wrapper" style="margin-top:.5em;">
 	<h1><?=$config->banner;?></h1>
 	<p><em><?=$config->slogan;?></em></p>
-	<a href="http://www.bootswatch.com/" target="_blank" class="btn btn-primary btn-lg">Learn more</a>
+	<a href=""  class="btn btn-primary btn-lg">Learn more</a>
 </div>
-<p>Here are a few more links to demo files that can be used as starting points when building web applications:</p>
-<p><a href="<?=VIRTUAL_PATH;?>demo/demo_shared.php" target="_blank">demo_shared</a>: A  singleton class based mysqli database (shared) connection application using the Customers table. Best starting point for a non-specific database enabled application </p>
-<p><a href="<?=VIRTUAL_PATH;?>demo/demo_postback_nohtml.php">postback_no_html</a>: A vanilla postback switch based application with no specific code other than submittal via POST. Use for building complex postback applications. Compare to <strong>demo_edit</strong> to see what this file can be used to create. </p>
-<p><a href="<?=VIRTUAL_PATH;?>demo/demo_list_pager.php" target="_blank">demo_list_pager</a>: A &quot;muffin&quot; example that incorporates the Pager class into a  list/view application. Best starting point for a List/View app </p>
-<p><a href="<?=VIRTUAL_PATH;?>demo/demo_add.php" target="_blank">demo_add</a>: A postback switch based application for adding new records to the Customers table.</p>
-<p><a href="<?=VIRTUAL_PATH;?>demo/demo_edit.php" target="_blank">demo_edit</a>: A postback switch based application for editing existing records in the Customers table</p>
-<p>&nbsp; </p>
+<p </p>
 <?php
-//benchmarkNote("Test from index file!");
-$config->benchNote = "Test From Index File!";
-//echo $config->benchNote;die;
+
 
 //dumpDie($config);
 get_footer(); #defaults to theme header or footer_inc.php
