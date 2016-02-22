@@ -15,12 +15,13 @@
  */
 
 require '../inc_0700/config_inc.php'; #provides configuration, pathing, error handling, db credentials
+require '../inc_0700/credentials_inc.php'; #provides db credentials
 
 $config->titleTag = smartTitle(); #Fills <title> tag. If left empty will fallback to $config->titleTag in config_inc.php
 $config->metaDescription = smartTitle() . ' - ' . $config->metaDescription; 
 
 # SQL statement 
-$sql = "select * from wn16_news_categories";
+$sql = "select * from Category";
 
 //END CONFIG AREA ---------------------------------------------------------- 
 
