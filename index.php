@@ -29,7 +29,7 @@ $config->nav1 = array("page.php"=>"New Page!") + $config->nav1; #add a new page 
 # END CONFIG AREA ---------------------------------------------------------- 
 get_header(); #defaults to theme header or header_inc.php
 ?>
-<div class="jumbotron" style="margin-top:.5em;">
+<div class="wrapper" style="margin-top:.5em;">
 	<h1><?=$config->banner;?></h1>
 	<p><em><?=$config->slogan;?></em></p>
 	<a href="http://www.bootswatch.com/" target="_blank" class="btn btn-primary btn-lg">Learn more</a>
@@ -45,6 +45,7 @@ get_header(); #defaults to theme header or header_inc.php
 //benchmarkNote("Test from index file!");
 $config->benchNote = "Test From Index File!";
 //echo $config->benchNote;die;
+
 //dumpDie($config);
 get_footer(); #defaults to theme header or footer_inc.php
 ?>
