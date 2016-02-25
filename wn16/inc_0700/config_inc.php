@@ -10,8 +10,13 @@
  *
  * @package nmCommon
  * @author Bill Newman <williamnewman@gmail.com>
- * @version 2.3 2015/07/06 
- * @link http://www.newmanix.com/ 
+ * @author Mitchell Thompson <thomitchell@gmail.com>
+ * @author Brianna Karle <briannarkarle@gmail.com>
+ * @author Jennifer Lockett <lockettjk@gmail.com>
+ * @version 2.4 2016/02/19 
+ * @link App: http://mitchlthompson.com/wn16/news/ 
+ * @link Staging Area: https://docs.google.com/document/d/1kCmCA3P_8FDUPRyJX2MMBUW4UrF6DUzHxBNXaU35V8Y/edit?usp=sharing
+ * @link Github repo: https://github.com/briannakarle/itc250-p3-newsaggregator
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License ("OSL") v. 3.0
  * @see common_inc.php
  * @see credentials_inc.php
