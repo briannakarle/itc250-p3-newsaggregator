@@ -15,7 +15,6 @@
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License ("OSL") v. 3.0
  * @see config_inc.php  
  * @see header_inc.php
- * @see footer_inc.php 
  * @todo none
  */
 require '../inc_0700/config_inc.php'; #provides configuration, pathing, error handling, db credentials
