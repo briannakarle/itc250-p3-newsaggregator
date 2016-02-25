@@ -37,6 +37,7 @@ get_header(); #defaults to header_inc.php
 $myFeed = new Feed($id);
 //dumpDie($myFeed);
 
+echo '<p><a href="index.php">BACK</a></p>';
 get_footer(); #defaults to footer_inc.php
 
 
@@ -63,14 +64,11 @@ class Feed
             while($row = mysqli_fetch_assoc($result))
             {# pull data from associative array
                 
-              $catPlusSub = $row['CategoryTitle'] . ' ' . $row['SubcategoryTitle']; 
-              $querySplit = explode(" ", $catPlusSub);
+              $catPlusSubCat = $row['CategoryTitle'] . ' ' . $row['SubcategoryTitle']; 
+              $querySplit = explode(" ", $catPlusSubCat);
               $query = implode("+", $querySplit);
               $this->CategoryTitle = $query;
-            
-//               echo '<pre>';
-//                var_dump($this->CategoryTitle);
-//                echo'</pre>';   
+             
                 
               $request = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&q=' . $this->CategoryTitle . '&output=rss';    
               $response = file_get_contents($request);
@@ -83,7 +81,7 @@ class Feed
                   }
             }
         }
-        echo '<p><a href="index.php">BACK</a></p>';
+    
     
     
         
