@@ -27,31 +27,32 @@ inner join Subcategory as s on c.CategoryID = s.CategoryID";
 
 get_header(); #defaults to header_inc.php
 ?>
-<h3 align="center">News Feeds</h3>
+<h3>Environmental News</h3>
 
 <?php
 #IDB::conn() creates a shareable database connection via a singleton class
 $result = mysqli_query(IDB::conn(),$sql) or die(trigger_error(mysqli_error(IDB::conn()), E_USER_ERROR));
 
 //create empty array to keep track of Categories
-$categories = array[];
+$categories = [];
 
 if(mysqli_num_rows($result) > 0)
 {#there are records - present data
+    
 	while($row = mysqli_fetch_assoc($result))
 	{# pull data from associative array 
-       
+        
         if(!in_array($row['CategoryTitle'], $categories))
         {//if CategoryTitle not in array, add to array to not use again, then echo Title&Description
            array_push($categories,$row['CategoryTitle']);
-           echo '<p>';
+           echo '<p class="news_category">';
 	       echo '<b>' . $row['CategoryTitle'] . '</b><br />';
-           echo 'Description: <b>' . $row['CategoryDescription'] . '</b><br />';    
+           echo 'Description: <b>' . $row['CategoryDescription'] . '</b></p><br />';    
        }
         
-        //echo each subcategory under current category
+        //echo each subcategory under current category   
+       echo '<p class="news_subcategory">';
        echo '<a href="read_feed.php?id=' . $row['SubcategoryID'] . '">' . $row['SubcategoryTitle'] . '</a><br />';
-       echo 'Description: ' . $row['SubcategoryDescription'] . '<br />';
       
 	   echo '</p>';
 	}

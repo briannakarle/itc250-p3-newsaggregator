@@ -30,7 +30,6 @@ if((isset($_GET['id'])) && (int)$_GET['id'] > 0){//good data, process
 
 get_header(); #defaults to header_inc.php
 ?>
-<h3 align="center">News Feed View</h3>
 
 <?php
 
@@ -74,10 +73,13 @@ class Feed
               $response = file_get_contents($request);
               $xml = simplexml_load_string($response);
               echo '<h1>' . $xml->channel->title . '</h1>';
+              echo '<p>' . $row['SubcategoryDescription'] . '</p><br />';    
               foreach($xml->channel->item as $story)
                  {
+                    echo '<div class="article">';
                     echo '<a href="' . $story->link . '">' . $story->title . '</a><br />'; 
                     echo '<p>' . $story->description . '</p><br /><br />';
+                    echo '</div><!-- end class article -->';
                   }
             }
         }
