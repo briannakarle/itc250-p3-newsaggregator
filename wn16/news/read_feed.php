@@ -52,8 +52,6 @@ class Feed
         $this->CategoryID = (int)$id;
         
         #SQL statement
-
-  
         //$sql = "select * from Subcategory where SubcategoryID=$this->CategoryID";
         $sql = "select * from Category as c inner join Subcategory as s on c.CategoryID = s.CategoryID where s.SubcategoryID=$this->CategoryID";
 
