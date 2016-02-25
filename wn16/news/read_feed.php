@@ -14,7 +14,8 @@
  * @todo none
  */
 require '../inc_0700/config_inc.php'; #provides configuration, pathing, error handling, db credentials
-require '../inc_0700/credentials_inc.php'; #provides db credentials
+require_once '../inc_0700/credentials_inc.php'; #provides db credentials
+include 'feed.php';
 
 $config->titleTag = smartTitle(); #Fills <title> tag. If left empty will fallback to $config->titleTag in config_inc.php
 $config->metaDescription = smartTitle() . ' - ' . $config->metaDescription; 
@@ -30,70 +31,53 @@ if((isset($_GET['id'])) && (int)$_GET['id'] > 0){//good data, process
 //END CONFIG AREA ---------------------------------------------------------- 
 
 get_header(); #defaults to header_inc.php
-?>
 
-<?php
+#SQL statement
+$sql = 'select * from Category as c inner join Subcategory as s on c.CategoryID = s.CategoryID where s.SubcategoryID=' . $id;
 
-$myFeed = new Feed($id);
+
+#IDB::conn() creates a shareable database connection via a singleton class
+$result = mysqli_query(IDB::conn(),$sql) or die(trigger_error(mysqli_error(IDB::conn()), E_USER_ERROR));
+
+
+
+    
+if(mysqli_num_rows($result) > 0)
+{#there are records - present data
+            
+    while($row = mysqli_fetch_assoc($result))
+    {# pull data from associative array
+                
+        $querySplit = explode(" ", $row['CategoryTitle'] . ' ' . $row['SubcategoryTitle']);
+        $query = implode("+", $querySplit);
+        
+        $subCatDescp = $row['SubcategoryDescription'];
+            
+    }
+    
+@mysqli_free_result($result);
+}
+
+
+$request = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&q=' . $query . '&output=rss';    
+$data = file_get_contents($request);
+       
+
+$today = date("Y-m-d H:i:s");    
+$myFeed = new Feed($id,$today,$data);
 //dumpDie($myFeed);
+
+$xml = simplexml_load_string($myFeed->Data);
+echo '<h1>' . $xml->channel->title . '</h1>';
+echo '<p>' . $subCatDescp . '</p><br />';    
+foreach($xml->channel->item as $story)   
+{
+    echo '<div class="article">';
+    echo '<a href="' . $story->link . '">' . $story->title . '</a><br />'; 
+    echo '<p>' . $story->description . '</p><br /><br />';
+    echo '</div><!-- end class article -->';
+}
+
 
 echo '<p><a href="index.php">BACK</a></p>';
 get_footer(); #defaults to footer_inc.php
-
-
-class Feed
-{
-    public $CategoryID = 0;
-    public $CategoryTitle = '';
-    public $CategoryDescription = '';
-    
-    public function __construct($id)
-    {
-        $this->CategoryID = (int)$id;
-        
-        #SQL statement
-        //$sql = "select * from Subcategory where SubcategoryID=$this->CategoryID";
-        $sql = "select * from Category as c inner join Subcategory as s on c.CategoryID = s.CategoryID where s.SubcategoryID=$this->CategoryID";
-
-
-        #IDB::conn() creates a shareable database connection via a singleton class
-        $result = mysqli_query(IDB::conn(),$sql) or die(trigger_error(mysqli_error(IDB::conn()), E_USER_ERROR));
-
-    
-        if(mysqli_num_rows($result) > 0)
-        {#there are records - present data
-            while($row = mysqli_fetch_assoc($result))
-            {# pull data from associative array
-                
-              $catPlusSubCat = $row['CategoryTitle'] . ' ' . $row['SubcategoryTitle']; 
-              $querySplit = explode(" ", $catPlusSubCat);
-              $query = implode("+", $querySplit);
-              $this->CategoryTitle = $query;
-             
-                
-              $request = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&q=' . $this->CategoryTitle . '&output=rss';    
-              $response = file_get_contents($request);
-              $xml = simplexml_load_string($response);
-              echo '<h1>' . $xml->channel->title . '</h1>';
-              echo '<p>' . $row['SubcategoryDescription'] . '</p><br />';    
-              foreach($xml->channel->item as $story)
-                 {
-                    echo '<div class="article">';
-                    echo '<a href="' . $story->link . '">' . $story->title . '</a><br />'; 
-                    echo '<p>' . $story->description . '</p><br /><br />';
-                    echo '</div><!-- end class article -->';
-                  }
-            }
-        }
-    
-    
-    
-        
-        @mysqli_free_result($result);
-    
-    
-    }#end news constructor
-
-
-
-}
