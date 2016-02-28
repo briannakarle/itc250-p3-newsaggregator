@@ -15,7 +15,8 @@
  */
 require '../inc_0700/config_inc.php'; #provides configuration, pathing, error handling, db credentials
 require_once '../inc_0700/credentials_inc.php'; #provides db credentials
-include 'feed.php';
+//Feed.php to be used to store session data
+include 'Feed.php';
 
 $config->titleTag = smartTitle(); #Fills <title> tag. If left empty will fallback to $config->titleTag in config_inc.php
 $config->metaDescription = smartTitle() . ' - ' . $config->metaDescription; 
@@ -28,6 +29,8 @@ if((isset($_GET['id'])) && (int)$_GET['id'] > 0){//good data, process
     header('Location:index.php');
 }
 
+session_clean(600);
+
 //END CONFIG AREA ---------------------------------------------------------- 
 
 get_header(); #defaults to header_inc.php
@@ -35,13 +38,9 @@ get_header(); #defaults to header_inc.php
 #SQL statement
 $sql = 'select * from Category as c inner join Subcategory as s on c.CategoryID = s.CategoryID where s.SubcategoryID=' . $id;
 
-
 #IDB::conn() creates a shareable database connection via a singleton class
 $result = mysqli_query(IDB::conn(),$sql) or die(trigger_error(mysqli_error(IDB::conn()), E_USER_ERROR));
 
-
-
-    
 if(mysqli_num_rows($result) > 0)
 {#there are records - present data
             
@@ -53,21 +52,29 @@ if(mysqli_num_rows($result) > 0)
         
         $subCatDescp = $row['SubcategoryDescription'];
             
-    }
-    
+    }    
 @mysqli_free_result($result);
 }
 
+$data = '';
+if(empty($_SESSION)){
+    startSession();
+    $request = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&q=' . $query . '&output=rss';  
+    $data = file_get_contents($request);
+    
+    $today = date("Y-m-d H:i:s");  
+    $myFeed = new Feed($id,$today,$data);
+    $xml = simplexml_load_string($myFeed->Data);
+    
+    session_write($myFeed->ID, $myFeed->Data);
 
-$request = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&q=' . $query . '&output=rss';    
-$data = file_get_contents($request);
-       
+    
+}else{
+    $data = session_read($id);
+    $xml = simplexml_load_string($data);
+}
 
-$today = date("Y-m-d H:i:s");    
-$myFeed = new Feed($id,$today,$data);
-//dumpDie($myFeed);
 
-$xml = simplexml_load_string($myFeed->Data);
 echo '<h1>' . $xml->channel->title . '</h1>';
 echo '<p>' . $subCatDescp . '</p><br />';    
 foreach($xml->channel->item as $story)   
@@ -80,4 +87,5 @@ foreach($xml->channel->item as $story)
 
 
 echo '<p><a href="index.php">BACK</a></p>';
+session_close();
 get_footer(); #defaults to footer_inc.php

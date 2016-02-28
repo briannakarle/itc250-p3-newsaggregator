@@ -36,6 +36,7 @@ ob_start();  #buffers our page to be prevent header errors. Call before INC file
 date_default_timezone_set('America/Los_Angeles'); #sets default date/timezone for this website
 //ini_set('session.save_path','/home/classes/horsey01/sessions'); #optional folder set to 0700 outside webroot to store session data
 //ini_set('session.cookie_domain', '.seattlecentral.edu'); # "dot" (period) then domain name - apply session cookies to subdomains, incl www!
+ini_set('session.gc_maxlifetime', '600'); //set session duration (maxlifetime) to 10 minutes
 header("Cache-Control: no-cache");header("Expires: -1");#Helps stop browser & proxy caching
 # END SETTINGS (php.ini overrides & other enviroment settings)------------------------------------------------------------ 
 
