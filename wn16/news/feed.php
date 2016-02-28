@@ -1,6 +1,6 @@
 <?php
 
-//feed.php to be used to store session data for read_feed.php
+//Feed.php to be used to store session data for read_feed.php
 
 class Feed 
 {

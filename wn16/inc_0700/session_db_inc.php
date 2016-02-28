@@ -49,9 +49,10 @@ $iConn = NULL;  #var is created outside all functions to be globally available
 
 #overwrite default session handler
 session_set_save_handler('session_open', 'session_close', 'session_read', 'session_write', 'session_eliminate', 'session_clean');
+/**
 startSession(); #DB requires session started
 
-/** 
+
  * session_open() is called when session_start() is called in a script. 
  * 
  * Opens a connection to the DB and prepares to manipulate session data.
