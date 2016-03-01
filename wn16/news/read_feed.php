@@ -34,6 +34,7 @@ if((isset($_GET['id'])) && (int)$_GET['id'] > 0){//good data, process
     header('Location:index.php');
 }
 
+//clean out session if older than 10 minutes
 session_clean(600);
 
 //END CONFIG AREA ---------------------------------------------------------- 
@@ -51,7 +52,8 @@ if(mysqli_num_rows($result) > 0)
             
     while($row = mysqli_fetch_assoc($result))
     {# pull data from associative array
-                
+         
+        //take category and subcategory then turn into string with "+" between each word for google news query
         $querySplit = explode(" ", $row['CategoryTitle'] . ' ' . $row['SubcategoryTitle']);
         $query = implode("+", $querySplit);
         
@@ -62,24 +64,28 @@ if(mysqli_num_rows($result) > 0)
 }
 
 $data = '';
-if(empty($_SESSION)){
+if(empty($_SESSION)){//if there isn't a session, start one
     startSession();
+    
+    //get feed data
     $request = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&q=' . $query . '&output=rss';  
     $data = file_get_contents($request);
     
+    //create Feed object 
     $today = date("Y-m-d H:i:s");  
     $myFeed = new Feed($id,$today,$data);
     $xml = simplexml_load_string($myFeed->Data);
     
-    session_write($myFeed->ID, $myFeed->Data);
-
+    //create session with Feed data
+    session_write($myFeed->ID, $myFeed->Data);  
     
-}else{
+}else{//if session already set
+    //get session data and load it it $xml variable
     $data = session_read($id);
     $xml = simplexml_load_string($data);
 }
 
-
+//output feed data
 echo '<h1>' . $xml->channel->title . '</h1>';
 echo '<p>' . $subCatDescp . '</p><br />';    
 foreach($xml->channel->item as $story)   
@@ -92,5 +98,7 @@ foreach($xml->channel->item as $story)
 
 
 echo '<p><a href="index.php">BACK</a></p>';
+
+//close session
 session_close();
 get_footer(); #defaults to footer_inc.php
