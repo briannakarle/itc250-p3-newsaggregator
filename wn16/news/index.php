@@ -45,20 +45,17 @@ if(mysqli_num_rows($result) > 0)
     
 	while($row = mysqli_fetch_assoc($result))
 	{# pull data from associative array 
-        
         if(!in_array($row['CategoryTitle'], $categories))
         {//if CategoryTitle not in array, add to array to not use again, then echo Title&Description
            array_push($categories,$row['CategoryTitle']);
-           echo '<p class="news_category">';
-	       echo '<b>' . $row['CategoryTitle'] . '</b><br />';
-           echo 'Description: <b>' . $row['CategoryDescription'] . '</b></p><br />';    
+           echo '<div class="panel panel-primary well col-md-12">';
+           echo '<div class="panel-heading">';
+           echo '<h3 class="panel-title">';
+	       echo  $row['CategoryTitle'] . '</h3></div>';
+           echo '<div class="panel-body">Description:' . $row['CategoryDescription'] . '</div></div>';    
        }
-        
         //echo each subcategory under current category   
-       echo '<p class="news_subcategory">';
-       echo '<a href="read_feed.php?id=' . $row['SubcategoryID'] . '">' . $row['SubcategoryTitle'] . '</a><br />';
-      
-	   echo '</p>';
+       echo '<div class="panel panel-default"><div class="panel-body text-center"><a href="read_feed.php?id=' . $row['SubcategoryID'] . '">' . $row['SubcategoryTitle'] . '</a></div></div>';
 	}
 }else{#no records
 	echo '<div align="center">Sorry, there are no news feeds that match that category</div>';

@@ -1,4 +1,3 @@
-
 <?php
 /**
  * read_feed.php a view page to show a single news feed
@@ -86,14 +85,14 @@ if(empty($_SESSION)){//if there isn't a session, start one
 }
 
 //output feed data
-echo '<h1>' . $xml->channel->title . '</h1>';
-echo '<p>' . $subCatDescp . '</p><br />';    
+echo '<div class="panel panel-primary"><div class="panel-heading">';
+echo '<h3 class="panel-title">' . $xml->channel->title . '</h3></div>';
+echo '<div class="panel-body">' . $subCatDescp . '</div></div>'; 
 foreach($xml->channel->item as $story)   
 {
-    echo '<div class="article">';
-    echo '<a href="' . $story->link . '">' . $story->title . '</a><br />'; 
-    echo '<p>' . $story->description . '</p><br /><br />';
-    echo '</div><!-- end class article -->';
+    echo '<div class="panel panel-primary"><div class="panel-heading">';
+    echo '<h3 class="panel-title"><a href="' . $story->link . '">' . $story->title . '</a></h3></div>'; 
+    echo '<div class="panel-body">' . $story->description . '</div></div>';
 }
 
 
